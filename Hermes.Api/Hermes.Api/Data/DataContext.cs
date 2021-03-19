@@ -1,16 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hermes.Api.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 
 #nullable disable
 
-namespace Hermes.Api.Models
+namespace Hermes.Api.Data
 {
-    public partial class DataContext : DbContext
+    public partial class DataContext : IdentityDbContext<User>
+
     {
-        
-        public DataContext(DbContextOptions<DataContext> options)
-            : base(options)
+
+        public DataContext(DbContextOptions<DataContext> options):base(options)
         {
         }
 
@@ -18,7 +20,8 @@ namespace Hermes.Api.Models
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Detallefactura> Detallefacturas { get; set; }
         public DbSet<Factura> Facturas { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
 
-   
+
     }
 }

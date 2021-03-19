@@ -1,9 +1,10 @@
-﻿using Hermes.Api.Models;
+﻿using Hermes.Api.Data;
+using Hermes.Api.Models;
+using Hermes.Api.Models.Request;
 using Hermes.Api.Models.Response;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
-using Hermes.Api.Models.Request;
 
 namespace Hermes.Api.Controllers
 {
@@ -12,7 +13,7 @@ namespace Hermes.Api.Controllers
     public class ClienteController : ControllerBase
     {
         private readonly DataContext _context;
-        
+
 
         public ClienteController(DataContext context)
         {
@@ -26,7 +27,7 @@ namespace Hermes.Api.Controllers
             Respuesta _respuesta = new Respuesta();
             try
             {
-                var lst = _context.Clientes.ToList();
+                var lst = _context.Clientes.OrderByDescending(d => d.Id).ToList();
                 _respuesta.Exito = 1;
                 _respuesta.Data = lst;
 
