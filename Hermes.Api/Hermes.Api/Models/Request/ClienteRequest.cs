@@ -12,5 +12,7 @@ namespace Hermes.Api.Models.Request
         public string telefono { get; set; }
         public string identificacion { get; set; }
         public string direccion { get; set; }
+        public int idtipoidentificacion { get; set; }
+        public string estado { get; set; }
     }
 }

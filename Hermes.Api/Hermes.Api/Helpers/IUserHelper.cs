@@ -13,6 +13,7 @@ namespace Hermes.Api.Helpers
         Task<SignInResult> ValidatePasswordAsync(User user, string password);
         Task<IdentityResult> AddUserAsync(User user, string password);
         Task CheckRoleAsync(string roleName);
+        Task GetRolesAsync(string username);
         Task AddUserToRoleAsync(User user, string roleName);
         Task<bool> IsUserInRoleAsync(User user, string roleName);
     }

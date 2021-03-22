@@ -21,6 +21,7 @@ namespace Hermes.Api.Data
         public DbSet<Detallefactura> Detallefacturas { get; set; }
         public DbSet<Factura> Facturas { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<IdentificacionType> IdentificacionTypes { get; set; }
 
 
     }

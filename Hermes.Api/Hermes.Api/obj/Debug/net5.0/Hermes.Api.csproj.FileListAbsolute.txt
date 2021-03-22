@@ -137,3 +137,12 @@ C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\Microsoft.AspNetCore.A
 C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\Marvin.Cache.Headers.dll
+C:\Projects\hermes\Hermes.Api\Hermes.Api\obj\Debug\net5.0\Hermes.Api.MvcApplicationPartsAssemblyInfo.cs
+C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\NPOI.OOXML.dll
+C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\NPOI.OpenXml4Net.dll
+C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\NPOI.OpenXmlFormats.dll
+C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\NPOI.dll
+C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\BouncyCastle.Crypto.dll
+C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\ICSharpCode.SharpZipLib.dll
+C:\Projects\hermes\Hermes.Api\Hermes.Api\bin\Debug\net5.0\System.Linq.Dynamic.Core.dll

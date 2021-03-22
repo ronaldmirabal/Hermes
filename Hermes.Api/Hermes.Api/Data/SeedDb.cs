@@ -22,8 +22,11 @@ namespace Hermes.Api.Data
         {
             await _context.Database.EnsureCreatedAsync();
             await CheckRolesAsync();
+            await CheckIdentificacionAsync();
             await CheckUserAsync("Ronald Mirabal", "mirabalsoft@gmail.com","admin", "322 311 4620", UserType.Admin);
         }
+
+        
 
         private async Task<User> CheckUserAsync(
         string nombre,
@@ -58,7 +61,15 @@ namespace Hermes.Api.Data
             await _userHelper.CheckRoleAsync(UserType.User.ToString());
         }
 
-
+        private async Task CheckIdentificacionAsync()
+        {
+            if (!_context.IdentificacionTypes.Any())
+            {
+                _context.IdentificacionTypes.Add(new IdentificacionType { Nombre = "Cedula" });
+                _context.IdentificacionTypes.Add(new IdentificacionType { Nombre = "Pasaporte" });
+                await _context.SaveChangesAsync();
+            }
+        }
 
 
 

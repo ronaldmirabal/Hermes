@@ -5,6 +5,7 @@ using Hermes.Api.Models.Request;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,12 +27,14 @@ namespace Hermes.Api.Controllers
         private readonly IUserHelper _userHelper;
         private readonly IConfiguration _configuration;
         private readonly DataContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public AccountController(IUserHelper userHelper, IConfiguration configuration, DataContext context)
+        public AccountController(IUserHelper userHelper, IConfiguration configuration, DataContext context, UserManager<User> userManager)
         {
             _userHelper = userHelper;
             _configuration = configuration;
             _context = context;
+            _userManager = userManager;
         }
 
 
@@ -42,6 +45,58 @@ namespace Hermes.Api.Controllers
                 .ToListAsync();
             return Ok(users);
         }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] AuthRequest request)
+        {
+            var user = await _userHelper.GetUserAsync(request.username);
+            if (user != null)
+            {
+                Microsoft.AspNetCore.Identity.SignInResult result = await _userHelper.ValidatePasswordAsync(user, request.password);
+                if (result.Succeeded)
+                {
+                    Claim[] claims = new[]
+                    {
+                        new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    };
+
+                    var userRoles = await _userManager.GetRolesAsync(user);
+
+                var authClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                };
+
+                foreach (var userRole in userRoles)
+                {
+                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                }
+
+                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
+
+                var token = new JwtSecurityToken(
+                    issuer: _configuration["Tokens:Issuer"],
+                    audience: _configuration["Tokens:Audience"],
+                    expires: DateTime.Now.AddHours(3),
+                    claims: authClaims,
+                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                    );
+
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    expiration = token.ValidTo
+                });
+
+
+                }
+            }
+            return Unauthorized();
+        }
+
 
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

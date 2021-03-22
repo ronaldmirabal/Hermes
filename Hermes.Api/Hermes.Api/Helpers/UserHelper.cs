@@ -50,6 +50,11 @@ namespace Hermes.Api.Helpers
             }
         }
 
+        public Task GetRolesAsync(string username)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<User> GetUserAsync(string user)
         {
             return await _context.Users
@@ -60,6 +65,8 @@ namespace Hermes.Api.Helpers
         {
             return await _userManager.IsInRoleAsync(user, roleName);
         }
+
+        
     }
 
 }

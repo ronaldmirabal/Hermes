@@ -15,7 +15,7 @@ namespace Hermes.Api
 {
     public class Startup
     {
-        readonly string MiCors = "MiCors";
+        private readonly string DevelopmentPolicy = "_DevelopmentPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -53,13 +53,20 @@ namespace Hermes.Api
                 };
             });
 
-            services.AddMvc().AddNewtonsoftJson();
             services.AddCors(options =>
             {
-                options.AddPolicy(name: MiCors, builder => {
-                    builder.WithHeaders("*");
-                    builder.WithOrigins("*"); });
+                options.AddPolicy(DevelopmentPolicy,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:44399")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
             });
+
+            services.AddMvc().AddNewtonsoftJson();
+
+           
             services.AddControllers();
             services.AddTransient<SeedDb>();
             services.AddScoped<IUserHelper, UserHelper>();
@@ -72,11 +79,13 @@ namespace Hermes.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            if (env.IsDevelopment())
+            {
+                app.UseCors(DevelopmentPolicy);
+            }
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseRouting();
-            app.UseCors(MiCors);
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -2,12 +2,15 @@
 using Hermes.Api.Models;
 using Hermes.Api.Models.Request;
 using Hermes.Api.Models.Response;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
 namespace Hermes.Api.Controllers
@@ -23,22 +26,46 @@ namespace Hermes.Api.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult Get()
+        [HttpHead]
+        public async Task<ActionResult<IEnumerable<T>>> Get()
         {
             Respuesta _respuesta = new Respuesta();
             try
             {
-                var res = _context.Categorias.ToList();
-                _respuesta.Exito = 1;
-                _respuesta.Data = res;
+                var from = 0;
+                var to = 0;
+                var result = _context.Categorias.ToList();
+                var count = result.Count();
+
+
+                Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
+                Response.Headers.Add("Content-Range", $"{typeof(T).Name.ToLower()} {from}-{to}/{count}");
+                return Ok(result);
+
             }
             catch (Exception ex)
             {
-                _respuesta.Mensaje = ex.Message;
+                return BadRequest(ex.Message);
             }
-            return Ok(_respuesta);
-
         }
+
+        //[HttpGet]
+        //public IActionResult Get()
+        //{
+        //    Respuesta _respuesta = new Respuesta();
+        //    try
+        //    {
+        //        var res = _context.Categorias.ToList();
+        //        _respuesta.Exito = 1;
+        //        _respuesta.Datos = res;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _respuesta.Mensaje = ex.Message;
+        //    }
+        //    return Ok(_respuesta);
+
+        //}
 
         [HttpGet("{id}", Name = "GetCategoria")]
         public IActionResult Get(int id)
@@ -47,7 +74,7 @@ namespace Hermes.Api.Controllers
             try
             {
                 var res = _context.Categorias.FirstOrDefault(g => g.Id == id);
-                _respuesta.Data = res;
+                _respuesta.Datos = res;
                 _respuesta.Exito = 1;
             }
             catch (Exception ex)
@@ -133,5 +160,5 @@ namespace Hermes.Api.Controllers
 
 
 
-        }
+    }
 }

@@ -83,6 +83,9 @@ namespace Hermes.Api.Migrations
                     b.Property<string>("Direccion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Identificacion")
                         .HasColumnType("nvarchar(max)");
 
@@ -94,7 +97,12 @@ namespace Hermes.Api.Migrations
                     b.Property<string>("Telefono")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("identificacionTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("identificacionTypeId");
 
                     b.ToTable("Clientes");
                 });
@@ -154,6 +162,23 @@ namespace Hermes.Api.Migrations
                     b.HasIndex("clienteId");
 
                     b.ToTable("Facturas");
+                });
+
+            modelBuilder.Entity("Hermes.Api.Models.IdentificacionType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IdentificacionTypes");
                 });
 
             modelBuilder.Entity("Hermes.Api.Models.User", b =>
@@ -367,6 +392,15 @@ namespace Hermes.Api.Migrations
                         .HasForeignKey("categoriaId");
 
                     b.Navigation("categoria");
+                });
+
+            modelBuilder.Entity("Hermes.Api.Models.Cliente", b =>
+                {
+                    b.HasOne("Hermes.Api.Models.IdentificacionType", "identificacionType")
+                        .WithMany()
+                        .HasForeignKey("identificacionTypeId");
+
+                    b.Navigation("identificacionType");
                 });
 
             modelBuilder.Entity("Hermes.Api.Models.Detallefactura", b =>

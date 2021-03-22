@@ -36,7 +36,7 @@ namespace Hermes.Api.Controllers
             {
                 var res = await _contex.Articulos.OrderByDescending(d => d.Id).Include(c => c.categoria).ToListAsync();
                 _respuesta.Exito = 1;
-                _respuesta.Data = res;
+                _respuesta.Datos = res;
             }
             catch (Exception ex)
             {
@@ -59,7 +59,7 @@ namespace Hermes.Api.Controllers
             {
                 var res = await _contex.Articulos.Include(f => f.categoria).Where(a => a.Id == id).ToListAsync();
                 _respuesta.Exito = 1;
-                _respuesta.Data = res;
+                _respuesta.Datos = res;
             }
             catch (Exception ex)
             {

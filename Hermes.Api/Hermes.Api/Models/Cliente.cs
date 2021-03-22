@@ -15,6 +15,8 @@ namespace Hermes.Api.Models
         public string Telefono { get; set; }
         public string Identificacion { get; set; }
         public string Direccion { get; set; }
+        public bool Estado { get; set; }
+        public IdentificacionType identificacionType { get; set; }
 
         public virtual ICollection<Factura> Facturas { get; set; }
     }
