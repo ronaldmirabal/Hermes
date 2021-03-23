@@ -58,7 +58,7 @@ namespace Hermes.Api
                 options.AddPolicy(DevelopmentPolicy,
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:44399")
+                    builder.WithOrigins("*")
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 });

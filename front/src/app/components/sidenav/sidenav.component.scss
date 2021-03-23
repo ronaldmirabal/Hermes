@@ -29,4 +29,8 @@
        `<body>` to be our scrolling element for mobile layouts. */
     flex: 1 0 auto;
   }
-  
+  .mat-toolbar.mat-primary {
+    background: #3f51b5;
+    color: #fff;
+    margin-bottom: 5px;
+}
