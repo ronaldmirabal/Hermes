@@ -60,6 +60,7 @@ namespace Hermes.Api
                 {
                     builder.WithOrigins("*")
                         .AllowAnyMethod()
+                        .WithMethods("*")
                         .AllowAnyHeader();
                 });
             });

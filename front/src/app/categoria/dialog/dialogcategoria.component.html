@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{categoria!=null? 'Editar categoria': 'Nueva categoria'}}</h1>
+<div mat-dialog-content>
+    <mat-form-field>
+    <mat-label>Nombre</mat-label>
+    <input matInput [(ngModel)]="nombre">
+</mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="close()">Canselar</button>
+    <button mat-raised-button (click)="categoria!= null? editCategoria() : addCategoria()" color="primary">Guardar</button>
+</div>

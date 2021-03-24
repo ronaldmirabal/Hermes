@@ -28,4 +28,14 @@ export class ApiCategoriaService {
   add(categoria: Categoria):Observable<Response>{
     return this._http.post<Response>(this.url,categoria,httpOption);
   }
+
+  edit(categoria: Categoria):Observable<Response>{
+    return this._http.put<Response>(this.url,categoria,httpOption);
+  }
+
+  delete(id: number):Observable<Response>{
+    return this._http.delete<Response>(`${this.url}/${id}`);
+  }
+
+
 }

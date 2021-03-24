@@ -1,3 +1,5 @@
+import { DialogDeleteComponent } from './common/delete/dialogdelete.component';
+import { DialogCategoriaComponent } from './categoria/dialog/dialogcategoria.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -17,13 +19,17 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {FormsModule} from '@angular/forms';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     SidenavComponent,
-    CategoriaComponent
+    CategoriaComponent,
+    DialogCategoriaComponent,
+    DialogDeleteComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +44,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatDialogModule,
     MatButtonModule,
     MatInputModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

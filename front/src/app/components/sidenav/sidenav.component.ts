@@ -31,6 +31,7 @@ export class SidenavComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
+ 
 
   shouldRun = true;
 }

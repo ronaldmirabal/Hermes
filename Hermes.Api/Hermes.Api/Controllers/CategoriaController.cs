@@ -109,7 +109,7 @@ namespace Hermes.Api.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult Detele(int id)
         {
             Respuesta _respuesta = new Respuesta();
