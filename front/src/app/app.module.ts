@@ -13,14 +13,21 @@ import {MatListModule} from '@angular/material/list';
 import {SidenavComponent } from './components/sidenav/sidenav.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {CategoriaComponent } from './categoria/categoria.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {MatTableModule} from '@angular/material/table';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {FormsModule} from '@angular/forms';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { LoginComponent } from './login/login.component';
+import { JwtInterceptor } from './security/jwt.interceptor';
 
+export function tokenGetter(){
+  return localStorage.getItem("User");
+}
 
 @NgModule({
   declarations: [
@@ -29,7 +36,8 @@ import {FormsModule} from '@angular/forms';
     SidenavComponent,
     CategoriaComponent,
     DialogCategoriaComponent,
-    DialogDeleteComponent
+    DialogDeleteComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -45,9 +53,13 @@ import {FormsModule} from '@angular/forms';
     MatButtonModule,
     MatInputModule,
     MatSnackBarModule,
-    FormsModule
+    FormsModule,
+    MatCardModule,
+    MatFormFieldModule
   ],
-  providers: [],
+  providers: [
+    [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}]
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

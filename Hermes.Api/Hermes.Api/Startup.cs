@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Hermes.Api.Helpers;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Hermes.Api
 {
@@ -26,32 +27,36 @@ namespace Hermes.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentity<User, IdentityRole>(cfg =>
-            {
-                cfg.User.RequireUniqueEmail = true;
-                cfg.Password.RequireDigit = false;
-                cfg.Password.RequiredUniqueChars = 0;
-                cfg.Password.RequireLowercase = false;
-                cfg.Password.RequireNonAlphanumeric = false;
-                cfg.Password.RequireUppercase = false;
-            }).AddEntityFrameworkStores<DataContext>();
+          
 
 
             services.AddDbContext<DataContext>(cfg =>
             {
                 cfg.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddAuthentication()
-            .AddCookie()
-            .AddJwtBearer(cfg =>
+
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            //jwt
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var llave = Encoding.ASCII.GetBytes(appSettings.Secreto);
+            services.AddAuthentication(d =>
             {
-                cfg.TokenValidationParameters = new TokenValidationParameters
+                d.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                d.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(d=> {
+                d.RequireHttpsMetadata = false;
+                d.SaveToken = true;
+                d.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = Configuration["Tokens:Issuer"],
-                    ValidAudience = Configuration["Tokens:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(llave),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
                 };
             });
+
 
             services.AddCors(options =>
             {

@@ -6,7 +6,7 @@ import { Response } from '../models/response';
 
 const httpOption ={
   headers: new HttpHeaders({
-    'Contend-Type': 'aplication/json'
+    'Content-Type': 'application/json'
   })
 };
 

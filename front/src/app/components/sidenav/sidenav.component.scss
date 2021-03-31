@@ -17,6 +17,12 @@
   h1.example-app-name {
     margin-left: 8px;
   }
+  mat-sidenav {
+    width: 250px;
+}
+router-outlet{
+  margin: 20px;
+}
   
   .example-sidenav-container {
     /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This

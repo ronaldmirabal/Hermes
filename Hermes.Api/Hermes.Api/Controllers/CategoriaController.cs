@@ -2,21 +2,18 @@
 using Hermes.Api.Models;
 using Hermes.Api.Models.Request;
 using Hermes.Api.Models.Response;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using NPOI.SS.Formula.Functions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Threading.Tasks;
 
 namespace Hermes.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoriaController : ControllerBase
     {
         private readonly DataContext _context;
@@ -33,7 +30,7 @@ namespace Hermes.Api.Controllers
             Respuesta _respuesta = new Respuesta();
             try
             {
-                var res = _context.Categorias.OrderByDescending(d =>d.Id).ToList();
+                var res = _context.Categorias.OrderByDescending(d => d.Id).ToList();
                 _respuesta.Exito = 1;
                 _respuesta.Datos = res;
             }

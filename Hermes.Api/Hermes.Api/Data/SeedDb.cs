@@ -21,45 +21,24 @@ namespace Hermes.Api.Data
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
-            await CheckRolesAsync();
             await CheckIdentificacionAsync();
-            await CheckUserAsync("Ronald Mirabal", "mirabalsoft@gmail.com","admin", "322 311 4620", UserType.Admin);
+            await CheckCategoryAsync();
         }
 
-        
 
-        private async Task<User> CheckUserAsync(
-        string nombre,
-        string email,
-        string username,
-        string phone,
-        UserType userType)
+
+
+        private async Task CheckCategoryAsync()
         {
-            User user = await _userHelper.GetUserAsync(email);
-            if (user == null)
+            if (!_context.Categorias.Any())
             {
-                user = new User
-                {
-                    Nombre = nombre,
-                    Email = email,
-                    UserName = username,
-                    PhoneNumber = phone,
-                    UserType = userType
-                };
-
-                await _userHelper.AddUserAsync(user, "173001");
-                await _userHelper.AddUserToRoleAsync(user, userType.ToString());
+                _context.Categorias.Add(new Categoria { Nombre = "General" });
+                await _context.SaveChangesAsync();
             }
-
-            return user;
         }
 
 
-        private async Task CheckRolesAsync()
-        {
-            await _userHelper.CheckRoleAsync(UserType.Admin.ToString());
-            await _userHelper.CheckRoleAsync(UserType.User.ToString());
-        }
+
 
         private async Task CheckIdentificacionAsync()
         {

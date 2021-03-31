@@ -8,9 +8,13 @@ using System;
 
 namespace Hermes.Api.Data
 {
-    public partial class DataContext : IdentityDbContext<User>
+    public partial class DataContext : DbContext
 
     {
+        public DataContext()
+        {
+
+        }
 
         public DataContext(DbContextOptions<DataContext> options):base(options)
         {
@@ -21,6 +25,7 @@ namespace Hermes.Api.Data
         public DbSet<Detallefactura> Detallefacturas { get; set; }
         public DbSet<Factura> Facturas { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<IdentificacionType> IdentificacionTypes { get; set; }
 
 
