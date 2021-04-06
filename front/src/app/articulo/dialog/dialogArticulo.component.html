@@ -1,0 +1,86 @@
+<h1 mat-dialog-title>{{articulo!=null? 'Editar Articulo': 'Nuevo Articulo'}}</h1>
+<form [formGroup]="articuloForm">
+
+    <div class="form-row">
+        <div class="col">
+            <mat-form-field>
+                <input type="text" formControlName="nombre" matInput placeholder="Nombre del articulo">
+            </mat-form-field>
+        </div>
+
+        <div class="col">
+            <mat-form-field>
+                <input type="text" formControlName="codigo" matInput placeholder="#" readonly="readonly"> 
+            </mat-form-field>
+        </div>
+
+        <div class="col">
+            <mat-form-field>
+                <mat-label>Precio</mat-label>
+                <input type="number" formControlName="precio" matInput>
+            </mat-form-field>
+        </div>
+
+        <div class="col">
+            <mat-form-field>
+                <mat-label>Categoria</mat-label>
+                <mat-select formControlName="idcategoria">
+                    <ng-container *ngFor="let cat of categoryList">
+                        <mat-option [value]="cat.id">{{cat.nombre}}</mat-option>
+                    </ng-container>      
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="col">
+            <mat-form-field>
+                <mat-label>Tipo</mat-label>
+                <mat-select formControlName="tipo">
+                    <mat-option value="Standard">Standard</mat-option>
+                    <mat-option value="Servicio">Servicio</mat-option>  
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="col">
+            <mat-form-field>
+                <mat-label>Stock</mat-label>
+                <input type="number" formControlName="stock" matInput>
+            </mat-form-field>
+        </div>
+
+        <div class="col">
+            <mat-form-field>
+                <mat-label>Costo</mat-label>
+                <input type="number" formControlName="costo" matInput>
+            </mat-form-field>
+        </div>
+
+        <div class="col">
+            <mat-form-field>
+                <mat-label>Itbis</mat-label>
+                <input type="number" formControlName="itbis" matInput>
+            </mat-form-field>
+        </div>
+
+    </div>
+    
+    <div class="form-group">
+        <mat-form-field>
+            <mat-label>Descripción</mat-label>
+            <input formControlName="descripcion" matInput>
+        </mat-form-field>
+    </div>
+    
+    
+
+
+    
+
+    
+   
+    <div class="example-button-row">
+        <button (click)="limpiar()" mat-raised-button color="accent">Limpiar</button>
+        <button mat-raised-button [disabled]="!articuloForm.valid" (click)="articulo!= null? editArticulo() : addArticulo()" color="primary">Guardar</button>
+    </div>
+</form>

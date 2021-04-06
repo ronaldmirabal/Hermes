@@ -2,6 +2,8 @@
 using Hermes.Api.Models;
 using Hermes.Api.Models.Request;
 using Hermes.Api.Models.Response;
+using Hermes.Api.Services;
+using Hermes.Api.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,60 +20,35 @@ namespace Hermes.Api.Controllers
     public class ArticuloController : ControllerBase
     {
         private readonly DataContext _contex;
+        private readonly IArticuloService _articuloService;
 
-        public ArticuloController(DataContext contex)
+        public ArticuloController(DataContext contex, IArticuloService articuloService)
         {
             _contex = contex;
+            this._articuloService = articuloService;
         }
-        // GET: api/<ArticuloController>
+
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             Respuesta _respuesta = new Respuesta();
             try
             {
-                var res = await _contex.Articulos.OrderByDescending(d => d.Id).Include(c => c.categoria).ToListAsync();
+                var art = _articuloService.GetAll();
                 _respuesta.Exito = 1;
-                _respuesta.Datos = res;
+                _respuesta.Datos = art;
             }
             catch (Exception ex)
             {
-
                 _respuesta.Mensaje = ex.Message;
             }
             return Ok(_respuesta);
         }
 
-        // GET api/<ArticuloController>/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            Respuesta _respuesta = new Respuesta();
-            try
-            {
-                var res = await _contex.Articulos.Include(f => f.categoria).Where(a => a.Id == id).ToListAsync();
-                _respuesta.Exito = 1;
-                _respuesta.Datos = res;
-            }
-            catch (Exception ex)
-            {
+      
 
-                _respuesta.Mensaje = ex.Message;
-            }
-            return Ok(_respuesta);
-        }
-
-        // POST api/<ArticuloController>
         [HttpPost]
-        public async Task<IActionResult> Post(ArticuloRequest articuloRequest)
+        public async Task<IActionResult> Add(ArticuloRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -80,70 +57,29 @@ namespace Hermes.Api.Controllers
             Respuesta _respuesta = new Respuesta();
             try
             {
-                var categoria = await _contex.Categorias.FindAsync(articuloRequest.IdCategoria);
-                if (categoria == null)
-                {
-                    _respuesta.Exito = 0;
-                    return BadRequest("Categoria no valida");
-                }
-
-
-                Articulo articulo = new Articulo();
-                articulo.Codigo = articuloRequest.Codigo;
-                articulo.Nombre = articuloRequest.Nombre;
-                articulo.Descripcion = articuloRequest.Descripcion;
-                articulo.Precio = articuloRequest.Precio;
-                articulo.Stock = articuloRequest.Stock;
-                articulo.categoria = categoria;
-                articulo.Estado = true;
-                _contex.Add(articulo);
-                await _contex.SaveChangesAsync();
+                await _articuloService.Add(request);
                 _respuesta.Exito = 1;
             }
             catch (Exception ex)
             {
+                _respuesta.Exito = 0;
                 _respuesta.Mensaje = ex.Message;
             }
             return Ok(_respuesta);
         }
 
-        // PUT api/<ArticuloController>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, ArticuloRequest articuloRequest)
+        [HttpPut]
+        public async Task<IActionResult> Update(ArticuloRequest request)
         {
             Respuesta _respuesta = new Respuesta();
             if (!ModelState.IsValid)
             {
-                _respuesta.Exito = 0;
                 return BadRequest(ModelState);
             }
-
-            if (id != articuloRequest.Id)
-            {
-                _respuesta.Exito = 0;
-                return BadRequest();
-            }
-
             
             try
             {
-                var categoria = await _contex.Categorias.FindAsync(articuloRequest.IdCategoria);
-                if (categoria == null)
-                {
-                    _respuesta.Exito = 0;
-                    return BadRequest("Categoria no valida");
-                }
-
-
-                Articulo articulo = await _contex.Articulos.FindAsync(articuloRequest.Id);
-                articulo.Codigo = articuloRequest.Codigo;
-                articulo.Nombre = articuloRequest.Nombre;
-                articulo.Descripcion = articuloRequest.Descripcion;
-                articulo.Precio = articuloRequest.Precio;
-                articulo.Stock = articuloRequest.Stock;
-                articulo.categoria = categoria;
-                _contex.Articulos.Update(articulo);
-                await _contex.SaveChangesAsync();
+                await _articuloService.Update(request);
                 _respuesta.Exito = 1;
             }
             catch (Exception ex)
@@ -153,10 +89,30 @@ namespace Hermes.Api.Controllers
             return Ok(_respuesta);
         }
 
-        // DELETE api/<ArticuloController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+  
+        [HttpPut("{id}")]
+        [Route("delete")]
+        public IActionResult Delete(ArticuloRequest request)
         {
+            Respuesta _respuesta = new Respuesta();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                _articuloService.Delete(request);
+                _respuesta.Exito = 1;
+            }
+            catch (Exception ex)
+            {
+                _respuesta.Mensaje = ex.Message;
+            }
+            return Ok(_respuesta);
         }
+
+
+
+
     }
 }

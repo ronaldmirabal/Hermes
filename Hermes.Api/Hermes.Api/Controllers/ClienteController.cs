@@ -2,7 +2,10 @@
 using Hermes.Api.Models;
 using Hermes.Api.Models.Request;
 using Hermes.Api.Models.Response;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +14,7 @@ namespace Hermes.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ClienteController : ControllerBase
     {
         private readonly DataContext _context;
@@ -28,15 +32,16 @@ namespace Hermes.Api.Controllers
             Respuesta _respuesta = new Respuesta();
             try
             {
-                var lst = _context.Clientes.OrderByDescending(d => d.Id).ToList();
-                _respuesta.Exito = 1;
+                var lst = _context.Clientes.Include(i => i.ididentificacionType).OrderByDescending(d => d.Id).ToList();
                 _respuesta.Datos = lst;
+                _respuesta.Exito = 1;
+               
 
             }
             catch (Exception ex)
             {
-
                 _respuesta.Mensaje = ex.Message;
+                _respuesta.Exito = 0;
             }
             return Ok(_respuesta);
         }
@@ -64,7 +69,7 @@ namespace Hermes.Api.Controllers
                 oCliente.Direccion = oModel.direccion;
                 oCliente.Telefono = oModel.telefono;
                 oCliente.Estado = true;
-                oCliente.identificacionType = tipo;
+                oCliente.ididentificacionType = tipo;
                 _context.Add(oCliente);
                 await _context.SaveChangesAsync();
                 _respuesta.Exito = 1;
@@ -102,7 +107,7 @@ namespace Hermes.Api.Controllers
                 oCliente.Direccion = oModel.direccion;
                 oCliente.Telefono = oModel.telefono;
                 oCliente.Estado = true;
-                oCliente.identificacionType = tipo;
+                oCliente.ididentificacionType = tipo;
                 _context.Clientes.Update(oCliente);
                 await _context.SaveChangesAsync();
                 _respuesta.Exito = 1;

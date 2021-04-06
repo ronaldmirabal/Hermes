@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { User } from '../models/user';
 import {map} from 'rxjs/operators';
+import { Login } from '../models/login';
 
 
 
@@ -20,6 +21,7 @@ const httpOption ={
 export class ApiauthService{
     url: string ='https://localhost:44399/api/account/login';
     private userSubject: BehaviorSubject<User>;
+    public usuario: Observable<User>;
 
     public get usuarioData(): User{
       return this.userSubject.value;
@@ -28,11 +30,12 @@ export class ApiauthService{
     constructor(private _http: HttpClient){
       this.userSubject = 
       new BehaviorSubject<User>(JSON.parse(localStorage.getItem('User')|| '{}'));
+      this.usuario = this.userSubject.asObservable();
     }
 
 
-    login(username: string, password: string): Observable<Response>{
-        return this._http.post<Response>(this.url,{username,password},httpOption).pipe(
+    login(login: Login): Observable<Response>{
+        return this._http.post<Response>(this.url,login,httpOption).pipe(
           map(res =>{
             if(res.exito==1){
               const usuario: User = res.datos;
@@ -47,7 +50,7 @@ export class ApiauthService{
 
     logout(){
       localStorage.removeItem('User');
-      localStorage.clear();
+      this.userSubject.next(null);
     }
 
 }

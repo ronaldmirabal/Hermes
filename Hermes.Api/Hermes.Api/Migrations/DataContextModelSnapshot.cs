@@ -29,11 +29,17 @@ namespace Hermes.Api.Migrations
                     b.Property<string>("Codigo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Costo")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
+
+                    b.Property<decimal>("Itbis")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -45,6 +51,10 @@ namespace Hermes.Api.Migrations
 
                     b.Property<decimal>("Stock")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Tipo")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int?>("categoriaId")
                         .HasColumnType("int");
@@ -97,12 +107,12 @@ namespace Hermes.Api.Migrations
                     b.Property<string>("Telefono")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("identificacionTypeId")
+                    b.Property<int?>("ididentificacionTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("identificacionTypeId");
+                    b.HasIndex("ididentificacionTypeId");
 
                     b.ToTable("Clientes");
                 });
@@ -151,15 +161,28 @@ namespace Hermes.Api.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("NoFactura")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("NumeroNfc")
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("clienteId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("tipoComprobanteId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("clienteId");
+
+                    b.HasIndex("tipoComprobanteId");
 
                     b.ToTable("Facturas");
                 });
@@ -179,6 +202,30 @@ namespace Hermes.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("IdentificacionTypes");
+                });
+
+            modelBuilder.Entity("Hermes.Api.Models.TipoComprobante", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CantidadDisponible")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NombreNfc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Serie")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TipoNfc")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoComprobantes");
                 });
 
             modelBuilder.Entity("Hermes.Api.Models.User", b =>
@@ -216,11 +263,11 @@ namespace Hermes.Api.Migrations
 
             modelBuilder.Entity("Hermes.Api.Models.Cliente", b =>
                 {
-                    b.HasOne("Hermes.Api.Models.IdentificacionType", "identificacionType")
+                    b.HasOne("Hermes.Api.Models.IdentificacionType", "ididentificacionType")
                         .WithMany()
-                        .HasForeignKey("identificacionTypeId");
+                        .HasForeignKey("ididentificacionTypeId");
 
-                    b.Navigation("identificacionType");
+                    b.Navigation("ididentificacionType");
                 });
 
             modelBuilder.Entity("Hermes.Api.Models.Detallefactura", b =>
@@ -244,7 +291,13 @@ namespace Hermes.Api.Migrations
                         .WithMany("Facturas")
                         .HasForeignKey("clienteId");
 
+                    b.HasOne("Hermes.Api.Models.TipoComprobante", "tipoComprobante")
+                        .WithMany()
+                        .HasForeignKey("tipoComprobanteId");
+
                     b.Navigation("cliente");
+
+                    b.Navigation("tipoComprobante");
                 });
 
             modelBuilder.Entity("Hermes.Api.Models.Articulo", b =>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,11 +8,17 @@ namespace Hermes.Api.Models.Request
 {
     public class FacturaRequest
     {
-        
-        public int idcliente { get; set; }
-        public decimal total { get; set; }
+        public string NoFactura { get; set; }
+        [Required]
+        [Range(1,Double.MaxValue)]
+        public int Idcliente { get; set; }
 
-        List<Detalle> detallefacturas { get; set; }
+        [Required]
+        public int IdTipoComprobante { get; set; }
+        public decimal Total { get; set; }
+
+        [Required]
+        public List<Detalle> detallefacturas { get; set; }
         public FacturaRequest()
         {
             this.detallefacturas = new List<Detalle>();
@@ -19,10 +26,14 @@ namespace Hermes.Api.Models.Request
     }
     public class Detalle
     {
-        public int cantidad { get; set; }
-        public decimal precio { get; set; }
-        public decimal itbis { get; set; }
-        public decimal total { get; set; }
-        public int idarticulo { get; set; }
+        public int Cantidad { get; set; }
+        [Required]
+        public int Factura { get; set; }
+        public decimal Precio { get; set; }
+        public decimal Itbis { get; set; }
+        public decimal Total { get; set; }
+        [Required]
+        [Range(1, Double.MaxValue)]
+        public int Idarticulo { get; set; }
     }
 }

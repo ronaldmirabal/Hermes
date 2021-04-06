@@ -11,6 +11,7 @@ using Hermes.Api.Helpers;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Hermes.Api.Services;
 
 namespace Hermes.Api
 {
@@ -75,7 +76,10 @@ namespace Hermes.Api
            
             services.AddControllers();
             services.AddTransient<SeedDb>();
-            services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IFacturaService, FacturaService>();
+            services.AddScoped<IArticuloService, ArticuloService>();
+            services.AddScoped<ITipoComprobanteService, TipoComprobanteService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

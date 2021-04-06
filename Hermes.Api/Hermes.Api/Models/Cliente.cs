@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 #nullable disable
 
 namespace Hermes.Api.Models
 {
-    public partial class Cliente
+    public class Cliente
     {
         public int Id { get; set; }
         [MaxLength(50)]
@@ -16,8 +18,10 @@ namespace Hermes.Api.Models
         public string Identificacion { get; set; }
         public string Direccion { get; set; }
         public bool Estado { get; set; }
-        public IdentificacionType identificacionType { get; set; }
+        public IdentificacionType ididentificacionType { get; set; }
 
+        [JsonIgnore]
+        [IgnoreDataMember]
         public virtual ICollection<Factura> Facturas { get; set; }
     }
 }

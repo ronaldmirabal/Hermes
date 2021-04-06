@@ -1,7 +1,7 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="shouldRun">
     <mat-toolbar color="primary" class="example-toolbar">
       <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-      <h1 class="example-app-name">Responsive App</h1>
+      <h1 class="example-app-name">Hermes Software</h1>
     </mat-toolbar>
   
     <mat-sidenav-container class="example-sidenav-container"
@@ -9,10 +9,73 @@
       <mat-sidenav mode="side" opened [disableClose]="true" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
         <mat-nav-list>
-         
           <a mat-list-item [routerLink]="nav.route" *ngFor="let nav of fillerNav">
             <mat-icon>{{nav.icon}}</mat-icon>{{nav.name}}</a>
         </mat-nav-list>
+
+
+  <mat-expansion-panel (opened)="panelOpenState = true"
+  (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Ventas
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/factura">
+        <mat-icon>storefront</mat-icon>Facturas</a>
+    </mat-nav-list>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel (opened)="panelOpenState = true"
+  (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Productos
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/articulo">
+        <mat-icon>article</mat-icon>Articulos</a>
+        <a mat-list-item routerLink="/categoria">
+          <mat-icon>label</mat-icon>Categorias</a>
+    </mat-nav-list>
+  </mat-expansion-panel>
+
+
+  <mat-expansion-panel (opened)="panelOpenState = true"
+  (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Personas
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/cliente">
+        <mat-icon>person</mat-icon>Clientes</a>
+        <a mat-list-item routerLink="/cliente">
+          <mat-icon>hail</mat-icon>Proveedores</a>
+        <a mat-list-item routerLink="/cliente">
+          <mat-icon>manage_accounts</mat-icon>Usuarios</a>
+    </mat-nav-list>
+  </mat-expansion-panel>
+
+
+
+  <mat-expansion-panel (opened)="panelOpenState = true"
+  (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Configuración
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+      <a mat-list-item (click)="logout()" *ngIf="usuario">
+        <mat-icon>logout</mat-icon>Cerrar Sessión</a>
+        
+    </mat-nav-list>
+  </mat-expansion-panel>
+        
       </mat-sidenav>
   
       <mat-sidenav-content>

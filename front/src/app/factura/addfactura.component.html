@@ -1,0 +1,79 @@
+<div class="content">
+    <h1>Nueva Factura</h1>
+    <code>
+        {{ 
+            detalleForm.value | json
+        }}
+    </code>
+    <br>
+    <mat-form-field>
+        <mat-label>Cliente</mat-label>
+        <mat-select [(ngModel)]="factura.idcliente">
+            <ng-container *ngFor="let item of clienteList">
+                <mat-option [value]="item.id">{{item.nombre}}</mat-option>
+            </ng-container>      
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Tipo de Comprobante</mat-label>
+        <mat-select [(ngModel)]="factura.idTipoComprobante">
+            <ng-container *ngFor="let item of tipoComprobanteList">
+                <mat-option [value]="item.id">{{item.nombreNfc}}</mat-option>
+            </ng-container>      
+        </mat-select>
+    </mat-form-field>
+   
+   
+    <br>
+    <form [formGroup]="detalleForm">
+        
+
+       
+
+        <mat-form-field>
+            <mat-label>Articulo</mat-label>
+            <input type="text" formControlName="idarticulo" matInput>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Cantidad</mat-label>
+            <input type="text" formControlName="cantidad" matInput>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Precio</mat-label>
+            <input type="text" formControlName="precio" matInput>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Total</mat-label>
+            <input type="text" formControlName="total" matInput>
+        </mat-form-field>
+
+        <div>
+            <button (click)="addDetalle()" mat-raised-button>Agregar</button>
+        </div>
+
+
+<div>
+    <h5>Detalle</h5>
+    <table style="width: 100%;">
+        <tr>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Total</th>
+        </tr>
+        <tr *ngFor="let item of detalleFactura">
+            <td>{{item.cantidad}}</td>
+            <td>{{item.precio}}</td>
+            <td>{{item.total}}</td>
+        </tr>
+    </table>
+</div>
+<div class="example-button-row">
+    <button mat-raised-button>Cancelar</button>
+    <button mat-raised-button [disabled]="!detalleForm.valid" (click)="addFactura()" color="primary">Guardar</button>
+</div>
+</form>
+</div>

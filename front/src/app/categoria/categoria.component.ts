@@ -5,6 +5,7 @@ import { ApiCategoriaService } from '../services/api-categoria.service';
 import { MatDialog} from '@angular/material/dialog';
 import { Categoria } from '../models/categoria';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-categoria',
@@ -19,9 +20,10 @@ export class CategoriaComponent implements OnInit {
   constructor(
     private apiCategoria: ApiCategoriaService,
     public dialog: MatDialog,
+    private titleService: Title,
     public snackBar: MatSnackBar
   ) {
-   
+      this.titleService.setTitle("Lista de Categorias");
    }
 
   ngOnInit(): void {

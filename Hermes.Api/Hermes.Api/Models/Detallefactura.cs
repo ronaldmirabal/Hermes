@@ -9,7 +9,6 @@ namespace Hermes.Api.Models
     public partial class Detallefactura
     {
         public int Id { get; set; }
-
         [DisplayFormat(DataFormatString = "{0:N2}")]
         public int Cantidad { get; set; }
         [DisplayFormat(DataFormatString = "{0:C2}")]

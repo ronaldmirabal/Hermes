@@ -30,7 +30,7 @@ namespace Hermes.Api.Controllers
             Respuesta _respuesta = new Respuesta();
             try
             {
-                var res = _context.Categorias.OrderByDescending(d => d.Id).ToList();
+                var res = _context.Categorias.OrderBy(d => d.Id).ToList();
                 _respuesta.Exito = 1;
                 _respuesta.Datos = res;
             }

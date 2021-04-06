@@ -25,11 +25,11 @@ namespace Hermes.Api.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IUserHelper _userHelper;
+        private readonly IUserService _userHelper;
         private readonly IConfiguration _configuration;
         private readonly DataContext _context;
 
-        public AccountController(IUserHelper userHelper, IConfiguration configuration, DataContext context)
+        public AccountController(IUserService userHelper, IConfiguration configuration, DataContext context)
         {
             _userHelper = userHelper;
             _configuration = configuration;
