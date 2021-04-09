@@ -1,14 +1,10 @@
-﻿using Hermes.Api.Data;
-using Hermes.Api.Models;
-using Hermes.Api.Models.Request;
+﻿using Hermes.Api.Models.Request;
 using Hermes.Api.Models.Response;
+using Hermes.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Hermes.Api.Controllers
 {
@@ -17,26 +13,21 @@ namespace Hermes.Api.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ClienteController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IClienteService _clienteService;
 
-
-        public ClienteController(DataContext context)
+        public ClienteController(IClienteService clienteService)
         {
-            _context = context;
-
+            _clienteService = clienteService;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
             Respuesta _respuesta = new Respuesta();
             try
             {
-                var lst = _context.Clientes.Include(i => i.ididentificacionType).OrderByDescending(d => d.Id).ToList();
-                _respuesta.Datos = lst;
+                _respuesta.Datos = _clienteService.GetAll();
                 _respuesta.Exito = 1;
-               
-
             }
             catch (Exception ex)
             {
@@ -47,7 +38,7 @@ namespace Hermes.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(ClienteRequest oModel)
+        public IActionResult Add(ClienteRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -56,28 +47,11 @@ namespace Hermes.Api.Controllers
             Respuesta _respuesta = new Respuesta();
             try
             {
-                var tipo = await _context.IdentificacionTypes.FindAsync(oModel.idtipoidentificacion);
-                if (tipo == null)
-                {
-                    _respuesta.Exito = 0;
-                    return BadRequest("Tipo id no valida");
-                }
-
-                var oCliente = new Cliente();
-                oCliente.Nombre = oModel.nombre;
-                oCliente.Identificacion = oModel.identificacion;
-                oCliente.Direccion = oModel.direccion;
-                oCliente.Telefono = oModel.telefono;
-                oCliente.Estado = true;
-                oCliente.ididentificacionType = tipo;
-                _context.Add(oCliente);
-                await _context.SaveChangesAsync();
+                _clienteService.Add(request);
                 _respuesta.Exito = 1;
-
             }
             catch (Exception ex)
             {
-
                 _respuesta.Mensaje = ex.Message;
             }
             return Ok(_respuesta);
@@ -86,7 +60,7 @@ namespace Hermes.Api.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> Edit(ClienteRequest oModel)
+        public IActionResult Edit(ClienteRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -95,27 +69,30 @@ namespace Hermes.Api.Controllers
             Respuesta _respuesta = new Respuesta();
             try
             {
-                var tipo = await _context.IdentificacionTypes.FindAsync(oModel.idtipoidentificacion);
-                if (tipo == null)
-                {
-                    _respuesta.Exito = 0;
-                    return BadRequest("Tipo id no valida");
-                }
-                Cliente oCliente = _context.Clientes.Find(oModel.id);
-                oCliente.Nombre = oModel.nombre;
-                oCliente.Identificacion = oModel.identificacion;
-                oCliente.Direccion = oModel.direccion;
-                oCliente.Telefono = oModel.telefono;
-                oCliente.Estado = true;
-                oCliente.ididentificacionType = tipo;
-                _context.Clientes.Update(oCliente);
-                await _context.SaveChangesAsync();
+                _clienteService.Edit(request);
+                _respuesta.Exito = 1;
+            }
+            catch (Exception ex)
+            {
+                _respuesta.Mensaje = ex.Message;
+            }
+            return Ok(_respuesta);
+        }
+
+        [HttpPut]
+        [Route("delete")]
+        public IActionResult Delete(ClienteRequest request)
+        {
+            Respuesta _respuesta = new Respuesta();
+            try
+            {
+
+                _clienteService.Delete(request);
                 _respuesta.Exito = 1;
 
             }
             catch (Exception ex)
             {
-
                 _respuesta.Mensaje = ex.Message;
             }
             return Ok(_respuesta);
