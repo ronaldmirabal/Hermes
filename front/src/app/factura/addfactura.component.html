@@ -1,11 +1,7 @@
 <div class="content">
     <h1>Nueva Factura</h1>
-    <code>
-        {{ 
-            detalleForm.value | json
-        }}
-    </code>
     <br>
+    <div class="example-container">
     <mat-form-field>
         <mat-label>Cliente</mat-label>
         <mat-select [(ngModel)]="factura.idcliente">
@@ -15,6 +11,24 @@
         </mat-select>
     </mat-form-field>
 
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <mat-label>Number</mat-label>
+          <input type="text"
+                 placeholder="Pick one"
+                 aria-label="Number"
+                 matInput
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    
+
     <mat-form-field>
         <mat-label>Tipo de Comprobante</mat-label>
         <mat-select [(ngModel)]="factura.idTipoComprobante">
@@ -23,7 +37,7 @@
             </ng-container>      
         </mat-select>
     </mat-form-field>
-   
+</div>
    
     <br>
     <form [formGroup]="detalleForm">
@@ -52,7 +66,7 @@
         </mat-form-field>
 
         <div>
-            <button (click)="addDetalle()" mat-raised-button>Agregar</button>
+            <button (click)="addDetalle()" [disabled]="!detalleForm.valid" mat-raised-button>Agregar</button>
         </div>
 
 
@@ -73,7 +87,7 @@
 </div>
 <div class="example-button-row">
     <button mat-raised-button>Cancelar</button>
-    <button mat-raised-button [disabled]="!detalleForm.valid" (click)="addFactura()" color="primary">Guardar</button>
+    <button mat-raised-button (click)="addFactura()" color="primary">Guardar</button>
 </div>
 </form>
 </div>

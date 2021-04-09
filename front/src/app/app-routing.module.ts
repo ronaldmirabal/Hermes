@@ -8,6 +8,7 @@ import { RouterModule, Routes, CanActivate } from '@angular/router';
 import { AuthGuard } from './security/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { AddFacturaComponent } from './factura/addfactura.component';
+import { ProveedorComponent } from './proveedor/proveedor.component';
 
 const routes: Routes = [
   {path: '', redirectTo:'/home', pathMatch: 'full'},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'articulo',component:ArticuloComponent,canActivate: [AuthGuard]},
   {path: 'factura',component:FacturaComponent,canActivate: [AuthGuard]},
   {path: 'addfactura',component:AddFacturaComponent,canActivate: [AuthGuard]},
+  {path: 'proveedor',component:ProveedorComponent,canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent}
 ];
 

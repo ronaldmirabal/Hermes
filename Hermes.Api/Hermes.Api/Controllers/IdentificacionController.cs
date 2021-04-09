@@ -1,7 +1,5 @@
 ﻿using Hermes.Api.Models.Response;
 using Hermes.Api.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,14 +11,13 @@ namespace Hermes.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class TipoComprobanteController : ControllerBase
+    public class IdentificacionController : ControllerBase
     {
-        private readonly ITipoComprobanteService _comprobanteService;
+        private readonly ITipoIdentificacionService _tipoIdentificacionService;
 
-        public TipoComprobanteController(ITipoComprobanteService comprobanteService)
+        public IdentificacionController(ITipoIdentificacionService tipoIdentificacionService)
         {
-            _comprobanteService = comprobanteService;
+            _tipoIdentificacionService = tipoIdentificacionService;
         }
 
         [HttpGet]
@@ -29,17 +26,15 @@ namespace Hermes.Api.Controllers
             Respuesta _respuesta = new Respuesta();
             try
             {
-                _respuesta.Datos = _comprobanteService.GetAll();
+                _respuesta.Datos = _tipoIdentificacionService.GetAll();
                 _respuesta.Exito = 1;
             }
             catch (Exception ex)
             {
                 _respuesta.Mensaje = ex.Message;
+                _respuesta.Exito = 0;
             }
             return Ok(_respuesta);
         }
-
-
-
     }
 }

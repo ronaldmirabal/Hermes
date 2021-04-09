@@ -13,7 +13,7 @@ namespace Hermes.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoriaController : ControllerBase
     {
         private readonly DataContext _context;

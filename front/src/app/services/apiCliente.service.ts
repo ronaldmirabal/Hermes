@@ -24,9 +24,7 @@ export class ApiClienteService{
         return this._http.get<Response>(`${environment.url}/cliente`);
       }
 
-     getTipoIdentificacion(): Observable<Response>{
-       return this._http.get<Response>(`${environment.url}/tipoidentificacion`);
-     } 
+     
 
     add(cliente: Cliente):Observable<Response>{
         return this._http.post<Response>(`${environment.url}/cliente`,cliente,httpOption);

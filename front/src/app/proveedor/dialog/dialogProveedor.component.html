@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>{{proveedor!=null? 'Editar Proveedor': 'Nuevo Proveedor'}}</h1>
+<form [formGroup]="proveedorForm">
+    <div class="form-row">
+
+        <div class="col">
+            <mat-form-field>
+                <input type="text" formControlName="nombre" matInput placeholder="Nombre Completo">
+            </mat-form-field>
+        </div>
+
+        <div class="col">
+            <mat-form-field>
+                <span matPrefix>+1 &nbsp;</span>
+                <input type="tel" formControlName="telefono" matInput placeholder="Telefono">
+                <mat-icon matSuffix>mode_edit</mat-icon>
+            </mat-form-field>
+        </div>
+
+        <div class="col">
+            <mat-form-field>
+                <mat-label>Tipo Identificación</mat-label>
+                <mat-select formControlName="idtipoidentificacion">
+                    <ng-container *ngFor="let list of identificacionList">
+                        <mat-option [value]="list.id">{{list.nombre}}</mat-option>
+                    </ng-container>      
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="col">
+            <mat-form-field>
+                <input type="text" formControlName="noidentificacion" matInput placeholder="Identificacion">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field>
+                <input type="text" formControlName="direccion" matInput placeholder="Dirección">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="example-button-row">
+        <button (click)="limpiar()" mat-raised-button color="accent">Limpiar</button>
+        <button mat-raised-button [disabled]="!proveedorForm.valid" (click)="proveedor!= null? editProveedor() : addProveedor()" color="primary">Guardar</button>
+    </div>
+</form>

@@ -80,6 +80,8 @@ namespace Hermes.Api
             services.AddScoped<IFacturaService, FacturaService>();
             services.AddScoped<IArticuloService, ArticuloService>();
             services.AddScoped<ITipoComprobanteService, TipoComprobanteService>();
+            services.AddScoped<ITipoIdentificacionService, TipoIdentificacionService>();
+            services.AddScoped<IProveedorService, ProveedorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

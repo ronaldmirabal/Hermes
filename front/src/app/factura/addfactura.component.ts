@@ -3,12 +3,14 @@ import { ApiClienteService } from './../services/apiCliente.service';
 import { DetalleFactura } from './../models/detalleFactura';
 import { Factura } from './../models/factura';
 import { ApiFacturaService } from './../services/apiFactura.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Cliente } from '../models/cliente';
 import { TipoComprobante } from '../models/tipoComprobante';
 import { Title } from '@angular/platform-browser';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
     styleUrls: ['./factura.component.scss'],
@@ -21,6 +23,10 @@ export class AddFacturaComponent implements OnInit{
     tipoComprobanteList: TipoComprobante[];
     public detalleFactura: DetalleFactura[];
 
+
+    options: string[] = ['One', 'Two', 'Three'];
+   filteredOptions: Observable<string[]>;
+
     public detalleForm = this.formBuilder.group({
         cantidad: [0, Validators.required],
         precio: [0],
@@ -29,6 +35,7 @@ export class AddFacturaComponent implements OnInit{
         total: [0, Validators.required],
         idarticulo: [27, Validators.required]
     })
+    myControl = new FormControl();
 
     constructor(public snackbar: MatSnackBar,
         public apiFactura: ApiFacturaService,
@@ -68,5 +75,17 @@ export class AddFacturaComponent implements OnInit{
     ngOnInit(){
         this.getClientes();
         this.getTipoComprobantes();
+
+        this.filteredOptions = this.myControl.valueChanges
+        .pipe(
+            startWith(''),
+            map(value => this._filter(value))
+        );
     }
+
+    private _filter(value: string): string[] {
+        const filterValue = value.toLowerCase();
+    
+        return this.options.filter(option => option.toLowerCase().includes(filterValue));
+      }
 }

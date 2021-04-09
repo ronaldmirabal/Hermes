@@ -1,3 +1,4 @@
+import { ApiTipoIdentificacionService } from './../../services/apiTipoIdentificacion.service';
 import { Response } from './../../models/response';
 import { Identificacion } from './../../models/identificacion';
 import { ApiClienteService } from './../../services/apiCliente.service';
@@ -32,6 +33,7 @@ export class DialogClienteComponent implements OnInit{
     constructor(
         public dialogRef: MatDialogRef<DialogClienteComponent>,
         public apiCliente: ApiClienteService,
+        public apiIdentificacion: ApiTipoIdentificacionService,
         public snackBar: MatSnackBar,
         private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) public cliente: Cliente
@@ -46,7 +48,7 @@ export class DialogClienteComponent implements OnInit{
      }
 
      getTipoIdentificacion(){
-         this.apiCliente.getTipoIdentificacion().subscribe(res =>{
+         this.apiIdentificacion.getTipoIdentificacion().subscribe(res =>{
              this.identificacionList = res.datos;
          })
      }

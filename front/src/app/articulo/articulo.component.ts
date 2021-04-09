@@ -23,7 +23,7 @@ export class ArticuloComponent implements OnInit{
         private titleService: Title,
         public snackBar: MatSnackBar
       ) {
-          this.titleService.setTitle("Lista de Articulos");
+          this.titleService.setTitle("Articulos");
        }
 
        getArticulos(){

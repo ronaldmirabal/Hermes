@@ -4,14 +4,16 @@ using Hermes.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hermes.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210408211341_addproveedor")]
+    partial class addproveedor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,7 +219,7 @@ namespace Hermes.Api.Migrations
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
 
-                    b.Property<string>("NoIdentificacion")
+                    b.Property<string>("Identificacion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")

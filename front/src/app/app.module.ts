@@ -33,6 +33,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { FacturaComponent } from './factura/factura.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { ProveedorComponent } from './proveedor/proveedor.component';
+import { DialogProveedorComponent } from './proveedor/dialog/dialogProveedor.component';
 
 
 @NgModule({
@@ -42,6 +45,7 @@ import { FacturaComponent } from './factura/factura.component';
     SidenavComponent,
     CategoriaComponent,
     DialogCategoriaComponent,
+    DialogProveedorComponent,
     DialogClienteComponent,
     DialogDeleteComponent,
     DialogArticuloComponent,
@@ -49,7 +53,8 @@ import { FacturaComponent } from './factura/factura.component';
     ClienteComponent,
     ArticuloComponent,
     FacturaComponent,
-    AddFacturaComponent
+    AddFacturaComponent,
+    ProveedorComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +77,8 @@ import { FacturaComponent } from './factura/factura.component';
     MatPaginatorModule,
     MatSelectModule,
     MatGridListModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatAutocompleteModule
   ],
   providers: [
     Title,
